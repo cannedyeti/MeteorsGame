@@ -1,9 +1,3 @@
-var shipImg;
-
-function preload() {
-	shipImg = loadImage("img/normandy.png")
-}
-
 function Ship() {
 	this.rotation = 0;
 	this.position = createVector(windowWidth/2, windowHeight/2);
@@ -11,6 +5,7 @@ function Ship() {
 	this.radius = 15;
 	this.velocity = createVector(0, 0);
 	this.isMoving = false;
+	this.centroid = createVector(0, 2.5);
 
 	this.moving = function(trueFalse) {
 		this.isMoving = trueFalse;
@@ -21,6 +16,7 @@ function Ship() {
 			this.move();
 		}
 		this.position.add(this.velocity);
+		this.centroid.add(this.velocity);
 		this.velocity.mult(.98);
 	}
 
@@ -49,7 +45,7 @@ function Ship() {
 		stroke(0, 255, 255);
 		fill(0);
 		rotate(this.heading + PI/2);
-		triangle(-this.radius, this.radius, this.radius, this.radius, 0, (-this.radius * 2));
+		triangle(-this.radius, this.radius, this.radius, this.radius, 0, (-this.radius*1.5));
 		pop();
 	}
 
@@ -60,6 +56,15 @@ function Ship() {
 
 	this.turn = function(angle) {
 		this.heading += this.rotation;
+	}
+
+	this.hits = function(meteor) {
+		var d = dist(this.position.x, this.position.y, meteor.position.x, meteor.position.y);
+		if (d < (meteor.radius * .8)) {
+			return true
+		} else {
+			return false;
+		}
 	}
 }
 

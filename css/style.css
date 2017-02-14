@@ -1,0 +1,27 @@
+.startScreen {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 2;
+	font-family: 'VT323', monospace;
+	background: black;
+	text-align: center;
+	color: white;
+}
+.start {
+	color: black;
+	border: none;
+}
+
+.start:hover {
+	background-color: black;
+	color: white;
+}
+
+h1 {
+	padding-top: 30%;
+}
+
+h3 {
+	color: black;
+}

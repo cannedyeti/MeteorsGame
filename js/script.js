@@ -9,13 +9,26 @@ function setup() {
 	createCanvas(windowWidth,windowHeight)
 	ship = new Ship();
 	meteor = new Meteor;
-	for (var i = 0; i < 12; i++) {
+	for (var i = 0; i < 20; i++) {
 		meteors.push(new Meteor());
 	}
 }
 
-function draw() {
+
+draw = function() {
 	background(img);
+
+	for (var i = 0; i < meteors.length; i++) {
+		if (ship.hits(meteors[i])) {
+			$(".startScreen").show();
+			$("h3").css("color", "red");
+			$(".startScreen > h3").text("You Lose! Try again?")
+		}
+		meteors[i].render();
+		meteors[i].update();
+		meteors[i].changeSides();
+	}
+
 	for (var i = lasers.length-1; i >= 0; i--) {
 		lasers[i].render();
 		lasers[i].update();
@@ -32,24 +45,29 @@ function draw() {
 				}
 		}
 	}
-	for (var i = 0; i < meteors.length; i++) {
-		meteors[i].render();
-		meteors[i].update();
-		meteors[i].changeSides();	
-	}
+
 	ship.render();
 	ship.turn();
 	ship.update();
 	ship.changeSides();
 
+	function checkWin() {
+		if (meteors.length === 0) {
+			console.log('suck it')
+			noLoop();
+			$(".startScreen > h3").text("YOU WON! Play again?")
+			$(".startScreen").show();
+		}
+	}
+
 }
 
-function keyReleased() {
+keyReleased = function() {
 	ship.setRotation(0);
 	ship.moving(false);
 }
 
-function keyPressed() {
+keyPressed = function() {
 	if (keyCode == 32) {
 		lasers.push(new Laser(ship.position, ship.heading));
 	} else if (keyCode == RIGHT_ARROW) {
@@ -60,3 +78,19 @@ function keyPressed() {
 		ship.moving(true);
 	}
 }
+
+
+$(function() {
+	$(".start").click(function() {
+		$(".startScreen").hide();
+		meteors = [];
+		lasers = [];
+		setup();
+		redraw();
+		loop();
+
+	})
+
+
+
+});
